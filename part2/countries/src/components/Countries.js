@@ -1,6 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const CountryInfo = ({ country }) => {
+  const [wheather, setWheater] = useState({ temp: 0, wind: 0, icon: '' });
+
+  useEffect(() => {
+    // TODO: Getting wether
+    const api_key = process.env.REACT_APP_API_KEY;
+    axios
+      .get(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${country.capitalInfo.latlng[0]}&lon=${country.capitalInfo.latlng[1]}&appid=${api_key}&units=metric`
+      )
+      .then(response => {
+        setWheater({
+          temp: Math.round(response.data.main.temp),
+          wind: Math.round(3.6 * response.data.wind.speed),
+          icon: `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`,
+        });
+      });
+  }, []);
+
   return (
     <div>
       <h2>{country.name.common}</h2>
@@ -19,6 +38,13 @@ const CountryInfo = ({ country }) => {
         src={country.flags.png}
         alt="Country flag"
       />
+
+      <h3>Wheather in {country.name.common}</h3>
+      <div>temperature {wheather.temp} ºC</div>
+      <div>
+        <img src={wheather.icon} />
+      </div>
+      <div>wind {wheather.wind} km/h</div>
     </div>
   );
 };
