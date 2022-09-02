@@ -28,6 +28,12 @@ const App = () => {
     setFilter(event.target.value);
   };
 
+  const handleDelete = id => {
+    personService
+      .remove(id)
+      .then(() => setPersons(persons.filter(p => p.id !== id)));
+  };
+
   const handleSubmit = event => {
     event.preventDefault();
     const found = persons.find(person => person.name === newName);
@@ -60,7 +66,7 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <Numbers filter={filter} persons={persons} />
+      <Numbers filter={filter} persons={persons} handleDelete={handleDelete} />
     </div>
   );
 };

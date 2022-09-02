@@ -10,6 +10,10 @@ const create = newPerson => {
   return axios.post(baseUrl, newPerson).then(response => response.data);
 };
 
-const personService = { getAll, create };
+const remove = id => {
+  return axios.delete(`${baseUrl}/${id}`);
+};
+
+const personService = { getAll, create, remove };
 
 export default personService;

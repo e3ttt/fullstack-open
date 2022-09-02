@@ -1,59 +1,19 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": 1
-    },
-    {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
-      "id": 2
-    },
-    {
       "name": "Dan Abramov",
       "number": "12-43-234345",
       "id": 3
     },
     {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": 4
-    },
-    {
-      "name": "Edvan ",
-      "number": "1234",
+      "name": "Fibonacci",
+      "number": "11235813",
       "id": 5
     },
     {
-      "name": "Dan Fig",
-      "number": "0000",
+      "name": "Gauss",
+      "number": "123...100",
       "id": 6
-    },
-    {
-      "name": "Adrian Trindade",
-      "number": "01029234",
-      "id": 7
-    },
-    {
-      "name": "ddfd",
-      "number": "fdf",
-      "id": 8
-    },
-    {
-      "name": "One more",
-      "number": "12",
-      "id": 9
-    },
-    {
-      "name": "yet another one",
-      "number": "092378473",
-      "id": 10
-    },
-    {
-      "name": "Guess what? One more!",
-      "number": "87348374",
-      "id": 11
     }
   ]
 }
