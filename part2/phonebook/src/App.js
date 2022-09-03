@@ -34,54 +34,70 @@ const App = () => {
   };
 
   const handleDelete = id => {
+    const backupPerson = persons.find(p => p.id === id);
     personService
       .remove(id)
+      .catch(() => {
+        setMessage({
+          type: 'error',
+          content: `Information of ${backupPerson.name} has already been removed from server`,
+        });
+        setTimeout(() => {
+          setMessage({ type: '', content: null });
+        }, 5000);
+      })
       .then(() => setPersons(persons.filter(p => p.id !== id)));
   };
 
   const handleSubmit = event => {
     event.preventDefault();
-    const personAlreadyInPhonebook = persons.find(
-      person => person.name === newName
-    );
-    if (personAlreadyInPhonebook) {
-      if (
-        window.confirm(
-          `${newName} is already added to phonebook, replace the old number with a new one?`
-        )
-      ) {
-        personService
-          .update(personAlreadyInPhonebook.id, {
-            ...personAlreadyInPhonebook,
-            number: newNumber,
-          })
-          .then(updatedPerson => {
-            setPersons(
-              persons.map(p => (p.id !== updatedPerson.id ? p : updatedPerson))
-            );
+    personService.getAll().then(response => {
+      setPersons(response);
 
-            setMessage({
-              type: 'success',
-              content: `Changed ${updatedPerson.name}`,
+      const personAlreadyInPhonebook = response.find(
+        person => person.name === newName
+      );
+      if (personAlreadyInPhonebook) {
+        if (
+          window.confirm(
+            `${newName} is already added to phonebook, replace the old number with a new one?`
+          )
+        ) {
+          personService
+            .update(personAlreadyInPhonebook.id, {
+              ...personAlreadyInPhonebook,
+              number: newNumber,
+            })
+            .then(updatedPerson => {
+              setPersons(
+                response.map(p =>
+                  p.id !== updatedPerson.id ? p : updatedPerson
+                )
+              );
+
+              setMessage({
+                type: 'success',
+                content: `Changed ${updatedPerson.name}`,
+              });
+              setTimeout(() => {
+                setMessage({ type: '', content: null });
+              }, 5000);
             });
+        }
+      } else {
+        personService
+          .create({ name: newName, number: newNumber })
+          .then(newPerson => {
+            setPersons(persons.concat(newPerson));
+            setMessage({ type: 'success', content: `Added ${newName}` });
             setTimeout(() => {
               setMessage({ type: '', content: null });
             }, 5000);
           });
       }
-    } else {
-      personService
-        .create({ name: newName, number: newNumber })
-        .then(newPerson => {
-          setPersons(persons.concat(newPerson));
-          setMessage({ type: 'success', content: `Added ${newName}` });
-          setTimeout(() => {
-            setMessage({ type: '', content: null });
-          }, 5000);
-        });
-    }
-    setNewName('');
-    setNewNumber('');
+      setNewName('');
+      setNewNumber('');
+    });
   };
 
   return (
