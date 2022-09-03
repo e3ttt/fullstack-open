@@ -1,0 +1,11 @@
+.grid {
+  display: grid;
+  grid-template-columns: 5rem auto;
+}
+
+.add-button {
+  background-color: #00ff0044;
+  color: #005500;
+  border: 1px solid #00550044;
+  padding: 0.3rem 1rem;
+}

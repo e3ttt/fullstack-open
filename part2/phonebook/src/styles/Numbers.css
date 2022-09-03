@@ -1,0 +1,15 @@
+.grid-numbers {
+  display: grid;
+  grid-template-columns: 200px 200px 100px;
+  margin-bottom: 0.5rem;
+}
+
+.delete-button {
+  background-color: #ff000044;
+  color: #550000;
+  border: none;
+  border: 1px solid #55000044;
+  padding: 0.5rem;
+  text-transform: uppercase;
+  border-radius: 0.5rem;
+}

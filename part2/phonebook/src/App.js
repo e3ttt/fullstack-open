@@ -3,6 +3,7 @@ import Filter from './components/Filter';
 
 import PersonForm from './components/PersonForm';
 import Numbers from './components/Numbers';
+import Notification from './components/Notification';
 import personService from './services/persons';
 
 const App = () => {
@@ -11,6 +12,10 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filter, setFilter] = useState('');
+  const [message, setMessage] = useState({
+    type: '',
+    content: null,
+  });
 
   useEffect(() => {
     personService.getAll().then(initialPersons => setPersons(initialPersons));
@@ -50,16 +55,30 @@ const App = () => {
             ...personAlreadyInPhonebook,
             number: newNumber,
           })
-          .then(updatedPerson =>
+          .then(updatedPerson => {
             setPersons(
               persons.map(p => (p.id !== updatedPerson.id ? p : updatedPerson))
-            )
-          );
+            );
+
+            setMessage({
+              type: 'success',
+              content: `Changed ${updatedPerson.name}`,
+            });
+            setTimeout(() => {
+              setMessage({ type: '', content: null });
+            }, 5000);
+          });
       }
     } else {
       personService
         .create({ name: newName, number: newNumber })
-        .then(newPerson => setPersons(persons.concat(newPerson)));
+        .then(newPerson => {
+          setPersons(persons.concat(newPerson));
+          setMessage({ type: 'success', content: `Added ${newName}` });
+          setTimeout(() => {
+            setMessage({ type: '', content: null });
+          }, 5000);
+        });
     }
     setNewName('');
     setNewNumber('');
@@ -67,11 +86,12 @@ const App = () => {
 
   return (
     <div>
+      <Notification type={message.type} message={message.content} />
       <h2>Phonebook</h2>
 
       <Filter filter={filter} handleFilter={handleFilter} />
 
-      <h2>add a new</h2>
+      <h2>Add a new</h2>
 
       <PersonForm
         newName={newName}
