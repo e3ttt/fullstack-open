@@ -4,10 +4,10 @@ import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Numbers from './components/Numbers';
 import Notification from './components/Notification';
-import personService from './services/persons';
+import peopleService from './services/people';
 
 const App = () => {
-  const [persons, setPersons] = useState([]);
+  const [people, setPeople] = useState([]);
 
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
@@ -18,7 +18,7 @@ const App = () => {
   });
 
   useEffect(() => {
-    personService.getAll().then(initialPersons => setPersons(initialPersons));
+    peopleService.getAll().then(initialpeople => setPeople(initialpeople));
   }, []);
 
   const handleNewNameChange = event => {
@@ -34,8 +34,8 @@ const App = () => {
   };
 
   const handleDelete = id => {
-    const backupPerson = persons.find(p => p.id === id);
-    personService
+    const backupPerson = people.find(p => p.id === id);
+    peopleService
       .remove(id)
       .catch(() => {
         setMessage({
@@ -46,13 +46,13 @@ const App = () => {
           setMessage({ type: '', content: null });
         }, 5000);
       })
-      .then(() => setPersons(persons.filter(p => p.id !== id)));
+      .then(() => setPeople(people.filter(p => p.id !== id)));
   };
 
   const handleSubmit = event => {
     event.preventDefault();
-    personService.getAll().then(response => {
-      setPersons(response);
+    peopleService.getAll().then(response => {
+      setPeople(response);
 
       const personAlreadyInPhonebook = response.find(
         person => person.name === newName
@@ -63,13 +63,13 @@ const App = () => {
             `${newName} is already added to phonebook, replace the old number with a new one?`
           )
         ) {
-          personService
+          peopleService
             .update(personAlreadyInPhonebook.id, {
               ...personAlreadyInPhonebook,
               number: newNumber,
             })
             .then(updatedPerson => {
-              setPersons(
+              setPeople(
                 response.map(p =>
                   p.id !== updatedPerson.id ? p : updatedPerson
                 )
@@ -85,10 +85,10 @@ const App = () => {
             });
         }
       } else {
-        personService
+        peopleService
           .create({ name: newName, number: newNumber })
           .then(newPerson => {
-            setPersons(persons.concat(newPerson));
+            setPeople(people.concat(newPerson));
             setMessage({ type: 'success', content: `Added ${newName}` });
             setTimeout(() => {
               setMessage({ type: '', content: null });
@@ -119,7 +119,7 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <Numbers filter={filter} persons={persons} handleDelete={handleDelete} />
+      <Numbers filter={filter} people={people} handleDelete={handleDelete} />
     </div>
   );
 };

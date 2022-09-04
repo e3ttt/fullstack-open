@@ -20,17 +20,10 @@
     "server": "json-server --port 3001 --watch db.json"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": ["react-app", "react-app/jest"]
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.2%", "not dead", "not op_mini all"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -39,5 +32,6 @@
   },
   "devDependencies": {
     "json-server": "^0.17.0"
-  }
+  },
+  "proxy": "https://falling-firefly-1224.fly.dev/api/persons"
 }

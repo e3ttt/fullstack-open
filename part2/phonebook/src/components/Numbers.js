@@ -1,7 +1,7 @@
 import '../styles/Numbers.css';
 
-const Numbers = ({ filter, persons, handleDelete }) => {
-  return persons
+const Numbers = ({ filter, people, handleDelete }) => {
+  return people
     .filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
     .map(person => (
       <div key={person.name} className="grid-numbers">
